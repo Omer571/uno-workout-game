@@ -11,7 +11,17 @@ package Card;
  */
 public class ActionCard extends Card {
     
-    private String rank; 
+    protected ActionCard.Ranks rank;
+
+    public ActionCard(Colors color, Card.Ranks rank) {
+        super(color, rank);
+    }
+    
+    protected enum Ranks 
+    { 
+        DRAWTWO, SKIP, REVERSE; 
+    } 
+    
     
     public Hand skip(Hand hand) {
         return hand;

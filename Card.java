@@ -10,30 +10,54 @@ package Card;
  * @author macbookretina2015
  */
 public class Card {
+
+    // enumerated colors
+    protected enum Colors 
+    { 
+        RED, GREEN, YELLOW, BLUE; 
+    } 
     
-    protected String color;
-    private int rank;
+    // enumerated ranks
+    protected enum Ranks 
+    {
+        ZERO, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT,NINE, DRAWTWO, SKIP, REVERSE;
+
+    }
     
-    public String getColor() {
+
+    protected Card.Colors color;
+    protected Card.Ranks rank;
+    
+    public Card(Card.Colors color, Card.Ranks rank) {
+        this.color = color;
+        this.rank = rank;
+    }
+    
+    public Card() {
+        
+    }
+    
+    public Card.Colors getColor() {
         return this.color;
     }
     
     /* checks if break (0 card) and if so print 1 minute break */
     public void isBreak() {
-        if (rank == 0) {
-            System.out.println("One Minute Break...");
-        }
+        if (rank == Card.Ranks.ZERO) {
+            System.out.println("One Minute Break..."); 
+        } 
+           
     }
     
-    public int getRank() {
+    public Card.Ranks getRank() {
         return this.rank;
     }
     
-    public void setRank(int cardNum) {
+    public void setRank(Card.Ranks cardNum) {
         this.rank = cardNum;
     }
     
-    public void setColor(String color) {
+    public void setColor(Card.Colors color) {
         this.color = color;
     }
 }
