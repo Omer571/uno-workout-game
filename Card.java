@@ -20,7 +20,7 @@ public class Card {
     // enumerated ranks
     protected enum Ranks 
     {
-        ZERO, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT,NINE, DRAWTWO, SKIP, REVERSE;
+        ZERO, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT,NINE, DRAWTWO, SKIP, REVERSE, WILD, WILDFOUR;
 
     }
     

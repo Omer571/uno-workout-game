@@ -11,6 +11,7 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.ListIterator;
 
 /**
  *
@@ -63,7 +64,7 @@ import java.util.LinkedList;
     }
    
     /* puts cards in hand */
-    public void drawHand(Pile pile) {
+    public void drawHand() {
        
     }
    
@@ -73,6 +74,23 @@ import java.util.LinkedList;
         }
         System.out.println("");
     }
+
+    
+    public int handLength() {
+        return this.LL.size();
+    }
+    
+    public int countItemByRank(Card.Ranks rank) {
+        int count = 0;
+        for (int i = 0; i < this.LL.size(); i++) {
+            if (this.LL.get(i).getRank() == rank) {
+                count++;
+            }
+        }
+        
+        return count;
+    }
+    
 
     @Override
     public int compareTo(Hand o) {
