@@ -1,2 +1,2 @@
 # uno-workout-game
-CS 2365 Final PRoject
+CS 2365 Final Project
