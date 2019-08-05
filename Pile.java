@@ -20,7 +20,7 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 class Pile {
     
-    private Queue deckQueue = new Queue();
+    public Queue deckQueue = new Queue();
     
     private ArrayList<Card> deck = new ArrayList<Card>();
     private Random random;  // random object for shuffeTogether

@@ -14,6 +14,12 @@ package Card;
  */
 public class WildCard extends Card {
     
+    @Override
+    public WildCard getCard() {
+        WildCard copy = this;
+        return copy;
+    }
+    
     public WildCard(Colors color, Card.Ranks rank) {
         super(color, rank);
     }

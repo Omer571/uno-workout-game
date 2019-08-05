@@ -41,6 +41,17 @@ public class Card {
         return this.color;
     }
     
+    public Card getCard() {
+        Card copy = new Card();
+        return copy;
+    }
+    
+    public void setCard(Card card) {
+        
+        this.setColor(card.getColor());
+        this.setRank(card.getRank());
+    }
+    
     /* checks if break (0 card) and if so print 1 minute break */
     public void isBreak() {
         if (rank == Card.Ranks.ZERO) {

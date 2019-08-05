@@ -19,15 +19,9 @@ public class PlayGame {
     private ArrayList<Card.Ranks> actionCardsNotToUse = new ArrayList<Card.Ranks>();
     private int numberOfDecks;
     
-    private int tempsReps1 = 0;
-    private int tempsReps2 = 0;
-    private int tempsReps3 = 0;
-    private int tempsReps4 = 0;
+    private int[] tempsReps1 = {0,0,0,0};
     
-    private int totalExercise1 = 0;
-    private int totalExercise2 = 0;
-    private int totalExercise3 = 0;
-    private int totalExercise4 = 0;
+    private int[] totalExerciseReps = {0,0,0,0};
     
     private int rankToInt(Card.Ranks rank) {
         
@@ -54,10 +48,70 @@ public class PlayGame {
                 return 9;
             
             default:
-                System.out.println("Error - Number not 0 - 9, assuming number 1");
-                return 1;
+                return 0;
         }
         
+    }
+    
+    public void wildCheck(Hand hand) {
+        for (int i = 0; i < hand.handLL.size(); i++) {
+            
+            if (hand.handLL.get(i) instanceof WildCard && hand.handLL.get(i).getRank() == Card.Ranks.WILD) {
+                ((WildCard) hand.handLL.get(i)).displayWild(hand);
+                break;
+            }
+	}
+    }
+    
+    public Pile reverseCheck(Hand hand, Pile pile) {
+        for (int i = 0; i < hand.handLL.size(); i++) {
+            
+            if (hand.handLL.get(i) instanceof ActionCard) {
+                pile = hand.handReverse(pile);
+            }
+	}
+        return pile;
+    }
+    
+    public Hand skipCheck(Hand hand) {
+         // All the cards of this color that are in the hand are discarded for this round
+        // returns new hand object
+        for (int i = 0; i < hand.handLL.size(); i++) {
+            if (hand.handLL.get(i) instanceof ActionCard) {
+                hand = ((ActionCard) hand.handLL.get(i)).skip(hand);
+            }
+	}
+        return hand;
+    }
+    
+    public int[] calculateExercises(Hand hand) {
+        
+        int[] repsList = {0,0,0,0};
+        int curNum;
+        /* calculate exercises */
+        for (Card card: hand.handLL) {
+            curNum = rankToInt(card.getRank());
+            
+            switch (card.getColor()) {
+                case RED:
+                    repsList[0] += curNum;
+                    break;
+                case GREEN:
+                    repsList[1] += curNum;
+                    break;
+                case YELLOW:
+                    repsList[2] += curNum;
+                    break;
+                case BLUE:
+                    repsList[3] += curNum;
+                    break;
+            }
+            
+            
+        }
+            
+
+        return repsList;
     }
     
     public static void main(String[] args) {
@@ -74,10 +128,68 @@ public class PlayGame {
         
         /* create and shuffle */
         pile.createDeck();
+        //pile.printDeck();
         pile.shuffle();
-        pile.printDeck();
-        System.out.println(pile.cardPileAmount());
+        //pile.printDeck();
+        //System.out.println(pile.cardPileAmount());
+
+        Hand hand = new Hand();
+        hand.handLL.add(new Card(Card.Colors.RED, Card.Ranks.NINE));
+        hand.handLL.add(new Card(Card.Colors.BLUE, Card.Ranks.TWO));
+        hand.handLL.add(new Card(Card.Colors.YELLOW, Card.Ranks.NINE));
+        hand.handLL.add(new Card(Card.Colors.GREEN, Card.Ranks.FIVE));
+        hand.handLL.add(new ActionCard(Card.Colors.RED, Card.Ranks.SKIP));
+        hand.handLL.add(new ActionCard(Card.Colors.BLUE, Card.Ranks.REVERSE));
+        hand.handLL.add(new ActionCard(Card.Colors.YELLOW, Card.Ranks.REVERSE));
+        hand.handLL.add(new WildCard(Card.Colors.GREEN, Card.Ranks.WILDFOUR));
+        hand.handLL.add(new ActionCard(Card.Colors.GREEN, Card.Ranks.DRAWTWO));
+        hand.handLL.add(new Card(Card.Colors.BLUE, Card.Ranks.THREE));
+        hand.handLL.add(new WildCard(Card.Colors.GREEN, Card.Ranks.WILD));
+        hand.handLL.add(new WildCard(Card.Colors.GREEN, Card.Ranks.WILD));
+        hand.handLL.add(new WildCard(Card.Colors.RED, Card.Ranks.WILD));
         
+        System.out.print("Before sorting hand: ");
+        hand.displaySortedHand();
+        hand.sortHand();
+        
+        System.out.print("After sorting hand: ");
+        hand.displaySortedHand();
+        
+        /*
+        for (int i = 0; i < hand.handLL.size(); i++) {
+    
+            if (hand.handLL.get(i) instanceof ActionCard) {
+                hand = ((ActionCard) hand.handLL.get(i)).skip(hand);
+            }
+	}*/
+        
+        
+        /* check in order of priorities */
+        
+        // skip check
+        hand = game.skipCheck(hand);
+        /* reverse will change our hand and return new pile */
+        game.reverseCheck(hand, pile);
+
+        // reverse check
+        game.reverseCheck(hand, pile);
+        
+        // wild check
+        game.wildCheck(hand);
+        
+        //pile.printDeck();
+        System.out.print("After applying action cards: ");
+        hand.displaySortedHand();
+
+        // calculate exercises
+        //for (int i: game.calculateExercises(hand)) { System.out.println(i);}
+        game.calculateExercises(hand);
+        
+        
+        // draw two check
+            
+            
+        // wild draw four check
         
         //while (pile.cardPileAmount() != 0) {
             
@@ -92,26 +204,6 @@ public class PlayGame {
             //hand.displaySortedHand();
             
             // NOTE: May be helpful to use example hands here 
-            
-            
-            /* check in order of priorities */
-            
-            // skip check
-            // All the cards of this color that are in the hand are discarded for this round
-            // returns new hand object
-            
-            // draw two check
-            // The Total number of the matching color is multiplied by 2
-            // What is the total number of matching cards???? (like matching sets)
-            
-            // reverse check
-            // All the matching color cards are to return to the bottom of the draw pile except “Reverse” (disard) card.
-            
-            // wild check
-            // The presence of this card will add 4 Burpees to the round of exercises. 
-            
-            // wild draw four check
-            // Adds4 the Burpeesand multipliesby 4 the total ofeachcolorin the hand.
             
             /* 
             display break if there is zero card 

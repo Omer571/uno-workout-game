@@ -25,7 +25,43 @@ public class ActionCard extends Card {
      */
     public Hand skip(Hand hand) {
         
+        /* new hand to return after skip */
+        Hand handWithSkip = new Hand();
+        
+        /* initialize color for compiler */
+        Card.Colors color = Card.Colors.RED;
+        
+        boolean skipCardFound = false;
+        
+        /* iterate through and find skip card's color */
+        for (Card curCard: hand.handLL) {
+            if (curCard.getRank() == Card.Ranks.SKIP) {
+                color = curCard.getColor();
+                skipCardFound = true;
+                break;
+            }
+        }
+        
+        if (skipCardFound == true) {
+            /* remove all cards of this color */
+            for (Card curCard: hand.handLL) {
+                if (curCard.getColor() != color) {
+                    handWithSkip.handLL.add(curCard);
+                }
+                
+            }
+            return handWithSkip;
+        } 
+        
         return hand;
+
+        
+    }
+    
+    @Override
+    public ActionCard getCard() {
+        ActionCard copy = this;
+        return copy;
     }
     
     /**
@@ -46,6 +82,7 @@ public class ActionCard extends Card {
      */
     public Pile reverse(Hand hand, Pile pile) {
         /* MAKE HAND REVERSE FUNCTION WHICH IS CALLED HERE */
+        pile = hand.handReverse(pile);
         return pile;
     }
     

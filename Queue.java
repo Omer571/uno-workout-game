@@ -126,6 +126,11 @@ public class Queue {
     public void printQueue() {
         for (int cur = this.head; cur < this.tail + 1 ;cur++) {
             System.out.println(this.array[cur].getRank() + " " + this.array[cur].getColor() + " " + cur);
+            /*
+            if (this.array[cur] instanceof ActionCard) {
+                System.out.println(" Action Card");
+            }*/
+ 
         }
         System.out.println();
     }
