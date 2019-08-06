@@ -5,8 +5,8 @@
  */
 
 package Card;
+import java.io.IOException;
 import static java.util.Comparator.comparing;
-
 import java.util.Objects;
 import java.util.Random;
 import java.util.Arrays;
@@ -15,6 +15,8 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -30,17 +32,14 @@ import java.util.List;
     
     public LinkedList<Card> handLL = new LinkedList<Card>();
  
-    /*
-    
-    sorting the cards by colors first in the order: Red,Green,Yellow,Blue
-    */
+    /**
+     * 
+     * sorting the cards by colors first in the order: Red,Green,Yellow,Blue
+     */
     public void sortHand() {
       
         Hand sortedHand = new Hand();
         
-        /* sort hand by color */
-        
-        /* start with reds */
         for (Card curCard: this.handLL) {
             if (curCard.getColor() == Card.Colors.RED) {
                 sortedHand.handLL.add(curCard);
@@ -81,8 +80,8 @@ import java.util.List;
         
     }
     /**
-  * sorting the cards by ranks as given in the project
-  */
+     * sorting the cards by ranks as given in the project
+    */
    
      public void sortByRank() {
         
@@ -90,28 +89,23 @@ import java.util.List;
         Card.Colors[] colors = {Card.Colors.RED,Card.Colors.GREEN, Card.Colors.YELLOW, Card.Colors.BLUE};
         
         for (Card.Colors color: colors) {
-            /* Skip first */
+            
             for (Card curCard: this.handLL) {
                 if (curCard.getRank() == Card.Ranks.SKIP && curCard.getColor() == color) {
                     sortedHand.handLL.add(curCard);
                 }
             }
-
-            /* Draw Two second */
             for (Card curCard: this.handLL) {
                 if (curCard.getRank() == Card.Ranks.DRAWTWO && curCard.getColor() == color) {
                     sortedHand.handLL.add(curCard);
                 }
             }
-
-            /* Reverse third */
             for (Card curCard: this.handLL) {
                 if (curCard.getRank() == Card.Ranks.REVERSE && curCard.getColor() == color) {
                     sortedHand.handLL.add(curCard);
                 }
             }
 
-            /* 9 - 0 */
             for (Card curCard: this.handLL) {
                 if (curCard.getRank() == Card.Ranks.NINE && curCard.getColor() == color) {
                     sortedHand.handLL.add(curCard);
@@ -165,19 +159,16 @@ import java.util.List;
             
         }
         /* Wild second to last */
-        for (Card curCard: this.handLL) {
-            if (curCard.getRank() == Card.Ranks.WILD) {
+            for (Card curCard: this.handLL) {
+                if (curCard.getRank() == Card.Ranks.WILD) {
                 sortedHand.handLL.add(curCard);
             }
         }
-
-        /* Wild4 last */
-        for (Card curCard: this.handLL) {
-            if (curCard.getRank() == Card.Ranks.WILDFOUR) {
+            for (Card curCard: this.handLL) {
+                if (curCard.getRank() == Card.Ranks.WILDFOUR) {
                 sortedHand.handLL.add(curCard);
             }
         }
-        
         this.handLL = sortedHand.handLL;
         sortedHand = new Hand();
     }
@@ -189,7 +180,8 @@ import java.util.List;
             if (card.getColor() == Card.Colors.NONE) {
                 System.out.print(card.getRank()+ ", ");
                 html_list.add(card.getRank()+ ", ");
-            } else {
+            }
+            else {
                System.out.print(card.getColor() + " " + card.getRank()+ ", "); 
                html_list.add(card.getColor() + " " + card.getRank()+ ", ");
             }
@@ -199,9 +191,13 @@ import java.util.List;
         html_list.add("\n");
     }
     
-    /*
-    method for counting the cards
-    */
+    
+    /**
+     * 
+     * method for counting the cards by rank
+     * @param rank
+     * @return the count to calculate number of reps
+     */
     public int countItemByRank(Card.Ranks rank) {
         int count = 0;
         for (int i = 0; i < this.handLL.size(); i++) {
@@ -209,11 +205,18 @@ import java.util.List;
                 count++;
             }
         }
-        
         return count;
     }
     
-    /* All the matching color cards are a return to the bottom of the draw pile except “Reverse” card */
+    /**
+     * 
+     * All the matching color cards are a returned to the bottom 
+     * of the draw pile except “Reverse” card and creates a new hand without 
+     * returned cards
+     * @param pile
+     * @return a pile with added cards from reverse
+     */
+   
     public Pile handReverse(Pile pile) {
         
         LinkedList<Card> newHandLL = new LinkedList<Card>();
@@ -233,8 +236,8 @@ import java.util.List;
         }
         if (reverseCardFound) {
             for (Card curCard: this.handLL) {
-                /* if card is same color as reverse, add to pile */
                 
+                /* if card is same color as reverse, add to pile */
                 if (curCard.getColor() == reverseColor && curCard.getRank() != Card.Ranks.REVERSE) {
                     pile.deckQueue.enqueue(curCard);
                 }
@@ -250,7 +253,10 @@ import java.util.List;
     }
     
     
-    
+    /**
+     * displays take break action from card class
+     * when zero card found in hand
+     */
     public void isBreak() {
         for (Card curCard: this.handLL) {
             if (curCard.getRank() == Card.Ranks.ZERO) {
@@ -261,22 +267,25 @@ import java.util.List;
         }
     }
     
-    /* puts cards in hand */
+    /**
+     * Takes cards from pile into hand
+     * @param pile 
+     */
     public void drawHand(Pile pile) {
         int count = 0;
         for (int i = 0; i < 7 && !pile.deckQueue.isEmpty(); i++) {
             count++;
             this.handLL.add(pile.deckQueue.dequeue());
 
+
         }
        
     }
-   
+    
  @Override
     public int compareTo(Hand o) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
    
-}
-
+ }

@@ -6,21 +6,28 @@
 
 package Card;
 
+import java.io.BufferedWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.IOException;
 
 
 /**
  * queue which adds at tail and pops from head
  * @author macbookretina2015
  */
-public class Queue {
+public class Queue  {
     
     private int head, tail;
     private int numberOfNodes = 0;
     final private int MAX;
     private Card[] array;
+
     
+    /**
+     * this method creates an array of 2000 
+     * @param maxElements 
+     */
     Queue(int maxElements) {
         this.array = new Card[maxElements];
         this.MAX = maxElements;
@@ -30,6 +37,8 @@ public class Queue {
         this.array = new Card[2000];
         this.MAX = 2000;
     }
+    
+
     
     /**
      * This method returns true if queue has reached max capacity
@@ -41,16 +50,14 @@ public class Queue {
      * This method dequeues card from tail
      * @return Card This returns popped card from queue, null if empty queue
      */
-    public Card dequeue() {
+    public Card dequeue(){
         
         if (isEmpty()) {
             System.out.println("Can't pop from empty Queue - returning null");
             return null;
         }
-        
         this.numberOfNodes--;
-        return array[head++];
-        
+        return array[head++];   
     }
     
     /**
@@ -121,15 +128,13 @@ public class Queue {
     }
     
     /**
-     * This method prints the queue 
+     * 
+     *This method prints the queue
      */
+     
     public void printQueue() {
         for (int cur = this.head; cur < this.tail + 1 ;cur++) {
-            System.out.println(this.array[cur].getRank() + " " + this.array[cur].getColor() + " " + cur);
-            /*
-            if (this.array[cur] instanceof ActionCard) {
-                System.out.println(" Action Card");
-            }*/
+            System.out.println(this.array[cur].getColor() + " " + this.array[cur].getRank() + " " + cur);
  
         }
         System.out.println();

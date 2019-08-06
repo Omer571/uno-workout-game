@@ -5,34 +5,43 @@
  */
 package Card;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 // TODO: 
 // Split createDeck into seperate functions (maybe)
 // Documentation
 
 /**
- *
- * @author macbookretina2015
+ * 
+ * @author sundeep
  */
+ 
 class Pile {
+    private boolean shuffleTogether;
+    private Random random;  // random object for shuffeTogether
+    private int amount = 0;
+    int numberOfDecks;
+    final static int CARDSPERDECK = 108;
+    
+    
+    private ThreadLocalRandom random2;  // random object for shuffle seperate
+    private ArrayList<Card> deck = new ArrayList<Card>();
+    private ArrayList<Card.Ranks> actionCardsNotToUse;
     
     public Queue deckQueue = new Queue();
     
-    private ArrayList<Card> deck = new ArrayList<Card>();
-    private Random random;  // random object for shuffeTogether
-    private ThreadLocalRandom random2;  // random object for shuffle seperate
-    
-    final static int CARDSPERDECK = 108; 
-    
-    private boolean shuffleTogether;
-    private int amount = 0;
-    int numberOfDecks;
-    private ArrayList<Card.Ranks> actionCardsNotToUse;
+    /**
+     * constructor for deck
+     */
 
+      
     Pile(int numberOfDecks, ArrayList<Card.Ranks> actionCardsNotToUse, boolean shuffleTogether) {
         
         /* make sure number of decks is right */
@@ -50,7 +59,12 @@ class Pile {
         this.shuffleTogether = true;
         actionCardsNotToUse = new ArrayList<Card.Ranks>();
     }
-    
+    /**
+     * 
+     * 
+     * @param num
+     * @return  returns ranks for the numbers in the card
+     */
     private Card.Ranks intToRank(int num) {
         
         switch (num) {
@@ -81,12 +95,57 @@ class Pile {
         
     }
     
+    public void createTestDeck() {
+        
+        this.deckQueue.enqueue(new Card(Card.Colors.RED, Card.Ranks.ZERO));
+        this.deckQueue.enqueue(new WildCard(Card.Colors.NONE, Card.Ranks.WILD));
+        this.deckQueue.enqueue(new Card(Card.Colors.YELLOW, Card.Ranks.ONE));
+        this.deckQueue.enqueue(new ActionCard(Card.Colors.BLUE, Card.Ranks.DRAWTWO));
+        this.deckQueue.enqueue(new Card(Card.Colors.GREEN, Card.Ranks.THREE));
+        this.deckQueue.enqueue(new Card(Card.Colors.BLUE, Card.Ranks.REVERSE));
+        this.deckQueue.enqueue(new WildCard(Card.Colors.NONE, Card.Ranks.WILD));
+        
+        this.deckQueue.enqueue(new Card(Card.Colors.YELLOW, Card.Ranks.TWO));
+        this.deckQueue.enqueue(new Card(Card.Colors.GREEN, Card.Ranks.FIVE));
+        this.deckQueue.enqueue(new Card(Card.Colors.GREEN, Card.Ranks.SIX));
+        this.deckQueue.enqueue(new Card(Card.Colors.RED, Card.Ranks.NINE));
+        this.deckQueue.enqueue(new Card(Card.Colors.GREEN, Card.Ranks.FIVE));
+        this.deckQueue.enqueue(new WildCard(Card.Colors.NONE, Card.Ranks.WILDFOUR));
+        this.deckQueue.enqueue(new ActionCard(Card.Colors.BLUE, Card.Ranks.DRAWTWO));
+        this.deckQueue.enqueue(new Card(Card.Colors.RED, Card.Ranks.TWO));
+        this.deckQueue.enqueue(new ActionCard(Card.Colors.RED, Card.Ranks.SKIP));
+        
+        this.deckQueue.enqueue(new Card(Card.Colors.RED, Card.Ranks.ZERO));
+        this.deckQueue.enqueue(new WildCard(Card.Colors.NONE, Card.Ranks.WILD));
+        this.deckQueue.enqueue(new Card(Card.Colors.YELLOW, Card.Ranks.ONE));
+        this.deckQueue.enqueue(new ActionCard(Card.Colors.BLUE, Card.Ranks.DRAWTWO));
+        this.deckQueue.enqueue(new Card(Card.Colors.GREEN, Card.Ranks.THREE));
+        this.deckQueue.enqueue(new Card(Card.Colors.BLUE, Card.Ranks.REVERSE));
+        this.deckQueue.enqueue(new WildCard(Card.Colors.NONE, Card.Ranks.WILD));
+        
+        this.deckQueue.enqueue(new Card(Card.Colors.YELLOW, Card.Ranks.TWO));
+        this.deckQueue.enqueue(new Card(Card.Colors.GREEN, Card.Ranks.FIVE));
+        this.deckQueue.enqueue(new Card(Card.Colors.GREEN, Card.Ranks.SIX));
+        this.deckQueue.enqueue(new Card(Card.Colors.RED, Card.Ranks.NINE));
+        this.deckQueue.enqueue(new Card(Card.Colors.GREEN, Card.Ranks.FIVE));
+        this.deckQueue.enqueue(new WildCard(Card.Colors.NONE, Card.Ranks.WILD));
+        this.deckQueue.enqueue(new ActionCard(Card.Colors.BLUE, Card.Ranks.DRAWTWO));
+        this.deckQueue.enqueue(new Card(Card.Colors.RED, Card.Ranks.TWO));
+        this.deckQueue.enqueue(new ActionCard(Card.Colors.BLUE, Card.Ranks.SKIP));
+        
+    }
+    
+    /**
+     * There are 76 Number cards, 24 Action cards and 8 Wild cards
+     * Each color contains 19 cards, one number 0 card and two sets of cards numbered 1 - 9
+     * There are two of each action card in each color: Draw 2, Reverse and Skip
+     * There are 4 of each kind of Wild Cards
+     * creating decks and queuing the cards
+     * 
+     */
     public void createDeck() {
         
-        // There are 76 Number cards, 24 Action cards and 8 Wild cards
-        // Each color contains 19 cards, one number 0 card and two sets of cards numbered 1 - 9
-        // There are two of each action card in each color: Draw 2, Reverse and Skip
-        // There are 4 of each kind of Wild Cards
+        
         
         for (int j = 0; j < this.numberOfDecks; j++) {
             
@@ -195,7 +254,10 @@ class Pile {
             this.amount += 76;  // change to constant later
         }
     }
-    
+    /**
+     * 
+     * creating a shuffle function for multiple decks
+     */
     public void shuffle() {
         
         random = new Random();
@@ -249,46 +311,26 @@ class Pile {
                 
                 */
             }
-
-            
-            
+   
         }
     
     }
+
     
     public void printDeck() {
         deckQueue.printQueue();
-        /*
-        for (int j = 0; j < this.cardPileAmount(); j++) {
-            System.out.println(j + " " + deckQueue.get(j).getColor() + " " + deckQueue.get(j).getRank());
-        }
-        */
     }
-            
+        /**
+         * 
+         * @return number of cards present for the game,
+         * based on user choices
+         */    
     public int cardPileAmount() {
         return this.deckQueue.getNumberOfElements();
-    }
+}
     
     
-    public static void main(String args[]) {
-        
-        ArrayList<Card.Ranks> actionCardsNotToUse = new ArrayList<Card.Ranks>();
-        actionCardsNotToUse.add(Card.Ranks.DRAWTWO);
-        Pile pile = new Pile(2, actionCardsNotToUse, false);
-        
-        pile.createDeck();
-        /*
-        System.out.println("***DECK SHOULD BE UNSHUFFLED***");
-        pile.printDeck();
-        
-        System.out.println("***DECK SHOULD BE SHUFFLED***");
-        pile.shuffle();
-        pile.printDeck();
-        */
-        System.out.println("*** TESTING IF SHUFFLE APART WORKS BY SHUFFLING A DECK"
-                + "AT A TIME ***");
-        pile.shuffle();
-    }
+    
     
    
     

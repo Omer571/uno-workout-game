@@ -21,6 +21,12 @@ public class ActionCard extends Card {
         super();
     }
     
+    @Override
+    public ActionCard getCard() {
+        ActionCard copy = this;
+        return copy;
+    }
+    
     /**
      * All the cards of this color that are in the hand are discarded 
      * for this round
@@ -81,12 +87,6 @@ public class ActionCard extends Card {
         
     }
     
-    @Override
-    public ActionCard getCard() {
-        ActionCard copy = this;
-        return copy;
-    }
-    
     /**
      * The Total number of the matching color is multiplied by 2
      * @param hand The hand object we are working with 
@@ -116,8 +116,6 @@ public class ActionCard extends Card {
                 }
             }
         }
-        
-        
     }
     
     /**
@@ -128,7 +126,6 @@ public class ActionCard extends Card {
      * @return Pile This returns the pile, BUT WE NEED TO ALSO EDIT HAND
      */
     public Pile reverse(Hand hand, Pile pile) {
-        /* MAKE HAND REVERSE FUNCTION WHICH IS CALLED HERE */
         pile = hand.handReverse(pile);
         return pile;
     }
@@ -158,5 +155,24 @@ public class ActionCard extends Card {
                 + " “Reverse\" card");
     }
     
+    
+    public /*static*/ void main(String[] args) {
+        
+        Pile deck = new Pile();
+        ActionCard actionCard = new ActionCard();
+        
+        deck.deckQueue.enqueue(new ActionCard(Card.Colors.YELLOW, Card.Ranks.SKIP));
+        deck.deckQueue.enqueue(new ActionCard(Card.Colors.YELLOW, Card.Ranks.ONE));
+        deck.deckQueue.enqueue(new ActionCard(Card.Colors.YELLOW, Card.Ranks.TWO));
+        deck.deckQueue.enqueue(new ActionCard(Card.Colors.RED, Card.Ranks.TWO));
+        
+        System.out.println("*** ActionCard Class - Testing Display Function ***");
+        
+        actionCard.displayDrawTwo();
+        actionCard.displayReverse();
+        actionCard.displaySkip();
+        
+        
+    }
 
 }
