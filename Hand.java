@@ -13,10 +13,13 @@ import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.ListIterator;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  *
  * @author sundeep
+ * created a linked list for sorting the elements
  */
 
  public class Hand implements Comparable<Hand>{
@@ -26,22 +29,62 @@ import java.util.ListIterator;
      private Pile pile;
     
     public LinkedList<Card> handLL = new LinkedList<Card>();
-    
-       
- /* puts cards in hand */
-    public void drawHand(Pile pile) {
-        /*Card[] hand = new Card[7];
-    for (int j = 0; j < 7; j += 1)
-    {
-        int index = rand.nextInt(52-j);
-        hand[j] = deck[index];
-    }
-    return hand;*/
-       //dequeue for seven times a for loop
-        //call  card pile amount
-    }
  
-    public void sortByRank() {
+    /*
+    
+    sorting the cards by colors first in the order: Red,Green,Yellow,Blue
+    */
+    public void sortHand() {
+      
+        Hand sortedHand = new Hand();
+        
+        /* sort hand by color */
+        
+        /* start with reds */
+        for (Card curCard: this.handLL) {
+            if (curCard.getColor() == Card.Colors.RED) {
+                sortedHand.handLL.add(curCard);
+                
+            } 
+        }
+        for (Card curCard: this.handLL) {
+            if (curCard.getColor() == Card.Colors.GREEN) {
+                sortedHand.handLL.add(curCard);
+                
+            } 
+        }
+        for (Card curCard: this.handLL) {
+            if (curCard.getColor() == Card.Colors.YELLOW) {
+                sortedHand.handLL.add(curCard);
+                
+            } 
+        }
+        for (Card curCard: this.handLL) {
+            if (curCard.getColor() == Card.Colors.BLUE) {
+                sortedHand.handLL.add(curCard);
+                
+            } 
+        }
+        for (Card curCard: this.handLL) {
+            if (curCard.getColor() == Card.Colors.NONE) {
+                sortedHand.handLL.add(curCard);
+                
+            } 
+        }
+        
+        this.handLL = sortedHand.handLL;
+        sortedHand = new Hand();
+        
+        
+        sortByRank();
+        
+        
+    }
+    /**
+  * sorting the cards by ranks as given in the project
+  */
+   
+     public void sortByRank() {
         
         Hand sortedHand = new Hand();
         Card.Colors[] colors = {Card.Colors.RED,Card.Colors.GREEN, Card.Colors.YELLOW, Card.Colors.BLUE};
@@ -64,20 +107,6 @@ import java.util.ListIterator;
             /* Reverse third */
             for (Card curCard: this.handLL) {
                 if (curCard.getRank() == Card.Ranks.REVERSE && curCard.getColor() == color) {
-                    sortedHand.handLL.add(curCard);
-                }
-            }
-
-            /* Wild fourth */
-            for (Card curCard: this.handLL) {
-                if (curCard.getRank() == Card.Ranks.WILD && curCard.getColor() == color) {
-                    sortedHand.handLL.add(curCard);
-                }
-            }
-
-            /* Wild4 fifth */
-            for (Card curCard: this.handLL) {
-                if (curCard.getRank() == Card.Ranks.WILDFOUR && curCard.getColor() == color) {
                     sortedHand.handLL.add(curCard);
                 }
             }
@@ -128,183 +157,51 @@ import java.util.ListIterator;
                     sortedHand.handLL.add(curCard);
                 }
             }
+            for (Card curCard: this.handLL) {
+                if (curCard.getRank() == Card.Ranks.ZERO && curCard.getColor() == color) {
+                    sortedHand.handLL.add(curCard);
+                }
+            }
+            
         }
-        this.handLL = sortedHand.handLL;
-        sortedHand = new Hand();
-    }
-    
-    public void sortByColor() {
-        
-    }
-    
-    public void sortHand() {
-      
-        Hand sortedHand = new Hand();
-        Card[] cards = new Card[2];
-        /* set iterator(s) to keep track of position in hand linked list */
-        ListIterator<Card> colorListIterator = handLL.listIterator();
-        ListIterator<Card> iterator = handLL.listIterator();
-        
-        /* sort hand by color */
-        
-        /* start with reds */
+        /* Wild second to last */
         for (Card curCard: this.handLL) {
-            if (curCard.getColor() == Card.Colors.RED) {
+            if (curCard.getRank() == Card.Ranks.WILD) {
                 sortedHand.handLL.add(curCard);
-                
-            } 
+            }
         }
-        for (Card curCard: this.handLL) {
-            if (curCard.getColor() == Card.Colors.GREEN) {
-                sortedHand.handLL.add(curCard);
-                
-            } 
-        }
-        for (Card curCard: this.handLL) {
-            if (curCard.getColor() == Card.Colors.YELLOW) {
-                sortedHand.handLL.add(curCard);
-                
-            } 
-        }
-        for (Card curCard: this.handLL) {
-            if (curCard.getColor() == Card.Colors.BLUE) {
-                sortedHand.handLL.add(curCard);
-                
-            } 
-        }
-        this.handLL = sortedHand.handLL;
-        sortedHand = new Hand();
-        
-        
-        sortByRank();
-        //sortByRank(Card.Colors.GREEN);
-        //sortByRank(Card.Colors.YELLOW);
-        //sortByRank(Card.Colors.BLUE);
-        
-    }
-    
-    /**
-     * This method swaps to cards
-     * @param card1 First card to swap
-     * @param card2 Second card to swap
-     */
-    
-    /* swap methods if card1 is of cards class */
-    public Card[] swap(Card card1, Card card2) {
-        
-        Card[] cards = new Card[2];
-        System.out.print("\nStarting Hand: ");
-        displaySortedHand();
-        
-        System.out.println("START: Card 1: " + card1.getColor() + " " + card1.getRank() + " Card 2: " + card2.getColor() + " " + card2.getRank());
-        
-        /* shallow copy card2 to temp */
-        Card temp = new Card();
-        temp.setColor(card2.getColor());
-        temp.setRank(card2.getRank());
-        
-        /* change card 2 to card 1 instance */
-        if (card1 instanceof WildCard) {
-            card2 = new WildCard(card1.getColor(), card1.getRank());
-        }
-        else if (card1 instanceof ActionCard){
-            card2 = new ActionCard(card1.getColor(), card2.getRank());
-        }
-        else if (card1 instanceof Card) {
-            card2 = new Card(card1.getColor(), card2.getRank());
-        }
-        
-        /* change card 1 to card 2 instance */
-        if (card2 instanceof WildCard) {
-            card1 = new WildCard(temp.getColor(), temp.getRank());
-        }
-        else if (card2 instanceof ActionCard){
-            card1 = new ActionCard(temp.getColor(), temp.getRank());
-        }
-        else if (card2 instanceof Card) {
-            card1 = new Card(temp.getColor(), temp.getRank());
-        } 
-        
-        
-        
-        /* shallow copy card2 to temp 
-        Card temp = new Card();
-        temp.setColor(card2.getColor());
-        temp.setRank(card2.getRank());
- 
-        
-        /* set card 1 to card 2 attributes 
-        card1.setColor(card2.getColor());
-        card1.setRank(card2.getRank());
-        
-        /* set card 2 to card 1 (temp's) attributes 
-        card2.setColor(temp.getColor());
-        card2.setRank(temp.getRank());
-        */
-        
-        cards[0] = card1;
-        cards[1] = card2;
-        
-        System.out.println("END: Card 1: " + cards[0].getColor() + " " + cards[0].getRank() + " Card 2: " + cards[1].getColor() + " " + cards[1].getRank());
-        
-        return cards;
-        
-    }
-    
 
-   
-    
-    public void displaySortedHand() {
-        for (Card card: this.handLL) {
-            System.out.print(card.getColor() + " " + card.getRank()+ ", ");
-        }
-        
-        System.out.println("");
-    }
-    
-    /* All the matching color cards are a return to the bottom of the draw pile except “Reverse” card */
-    public Pile handReverse(Pile pile) {
-        
-        LinkedList<Card> newHandLL = new LinkedList<Card>();
-        ArrayList<Card> cardsForPile = new ArrayList<Card>();
-        
-        boolean reverseCardFound = false;
-        
-        /* initialize color for compiler */
-        Card.Colors reverseColor = Card.Colors.RED;
-        
-        /* search for reverse */
+        /* Wild4 last */
         for (Card curCard: this.handLL) {
-            if (curCard.getRank() == Card.Ranks.REVERSE) {
-                //System.out.println(curCard.getColor())
-                reverseColor = curCard.getColor();
-                reverseCardFound = true;
-                break;
+            if (curCard.getRank() == Card.Ranks.WILDFOUR) {
+                sortedHand.handLL.add(curCard);
             }
         }
         
-        if (reverseCardFound) {
-            for (Card curCard: this.handLL) {
-                /* if card is same color as reverse, add to pile */
-                if (curCard.getColor() == reverseColor && curCard.getRank() != Card.Ranks.REVERSE) {
-                    pile.deckQueue.enqueue(curCard);
-                }
-                else if (curCard.getRank() != Card.Ranks.REVERSE || curCard.getColor() != reverseColor) {
-                    newHandLL.add(curCard);
-                }
-            /* assign new hand to this hand */
-            this.handLL = newHandLL;
-            }       
+        this.handLL = sortedHand.handLL;
+        sortedHand = new Hand();
+    }
+ 
+     
+    public void displaySortedHand(ArrayList<String> html_list) {
+ 
+        for (Card card: this.handLL) {
+            if (card.getColor() == Card.Colors.NONE) {
+                System.out.print(card.getRank()+ ", ");
+                html_list.add(card.getRank()+ ", ");
+            } else {
+               System.out.print(card.getColor() + " " + card.getRank()+ ", "); 
+               html_list.add(card.getColor() + " " + card.getRank()+ ", ");
+            }
+            
         }
-
-        
-        return pile;
+        System.out.println();
+        html_list.add("\n");
     }
     
-    public int handLength() {
-        return this.handLL.size();
-    }
-    
+    /*
+    method for counting the cards
+    */
     public int countItemByRank(Card.Ranks rank) {
         int count = 0;
         for (int i = 0; i < this.handLL.size(); i++) {
@@ -316,15 +213,70 @@ import java.util.ListIterator;
         return count;
     }
     
-    @Override
+    /* All the matching color cards are a return to the bottom of the draw pile except “Reverse” card */
+    public Pile handReverse(Pile pile) {
+        
+        LinkedList<Card> newHandLL = new LinkedList<Card>();
+        
+        boolean reverseCardFound = false;
+        /* initialize color for compiler */
+        Card.Colors reverseColor = Card.Colors.RED;
+        
+        /* search for reverse card */
+        for (Card curCard: this.handLL) {
+            if (curCard.getRank() == Card.Ranks.REVERSE) {
+                //System.out.println(curCard.getColor())
+                reverseColor = curCard.getColor();
+                reverseCardFound = true;
+                break;
+            }
+        }
+        if (reverseCardFound) {
+            for (Card curCard: this.handLL) {
+                /* if card is same color as reverse, add to pile */
+                
+                if (curCard.getColor() == reverseColor && curCard.getRank() != Card.Ranks.REVERSE) {
+                    pile.deckQueue.enqueue(curCard);
+                }
+                // here we have a bug, it adds reverses back to hand
+                else if (curCard.getRank() != Card.Ranks.REVERSE || curCard.getColor() != reverseColor) {
+                    newHandLL.add(curCard);
+                }
+            /* assign new hand to this hand */
+            this.handLL = newHandLL;
+            }       
+        }  
+        return pile;
+    }
+    
+    
+    
+    public void isBreak() {
+        for (Card curCard: this.handLL) {
+            if (curCard.getRank() == Card.Ranks.ZERO) {
+                curCard.displayBreak();
+                break;
+            }
+            
+        }
+    }
+    
+    /* puts cards in hand */
+    public void drawHand(Pile pile) {
+        int count = 0;
+        for (int i = 0; i < 7 && !pile.deckQueue.isEmpty(); i++) {
+            count++;
+            this.handLL.add(pile.deckQueue.dequeue());
+
+        }
+       
+    }
+   
+ @Override
     public int compareTo(Hand o) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
     
-    public void main(String[] args) {
-
-        
-        
-    }
+   
 }
+

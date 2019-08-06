@@ -14,7 +14,7 @@ public class Card {
     // enumerated colors
     protected enum Colors 
     { 
-        RED, GREEN, YELLOW, BLUE; 
+        RED, GREEN, YELLOW, BLUE ,NONE; 
     } 
     
     // enumerated ranks
@@ -53,9 +53,10 @@ public class Card {
     }
     
     /* checks if break (0 card) and if so print 1 minute break */
-    public void isBreak() {
+    public void displayBreak() {
+        
         if (rank == Card.Ranks.ZERO) {
-            System.out.println("One Minute Break..."); 
+            System.out.println("\nOne Minute Break...\n"); 
         } 
            
     }

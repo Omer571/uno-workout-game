@@ -39,7 +39,7 @@ public class Queue {
     
     /**
      * This method dequeues card from tail
-     * @return Card This returns popped card from queue
+     * @return Card This returns popped card from queue, null if empty queue
      */
     public Card dequeue() {
         
@@ -133,6 +133,14 @@ public class Queue {
  
         }
         System.out.println();
+    }
+    
+    /**
+     * This returns the number of elements in queue
+     * @return int This returns number of elements in queue 
+     */
+    public int getNumberOfElements() {
+        return this.numberOfNodes;
     }
     
     /*

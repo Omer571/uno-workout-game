@@ -91,17 +91,17 @@ class Pile {
         for (int j = 0; j < this.numberOfDecks; j++) {
             
             // wild and wild draw 4 cards 
-                deckQueue.enqueue(new WildCard(Card.Colors.RED, Card.Ranks.WILD));
-                deckQueue.enqueue(new WildCard(Card.Colors.RED, Card.Ranks.WILDFOUR));
+                deckQueue.enqueue(new WildCard(Card.Colors.NONE, Card.Ranks.WILD));
+                deckQueue.enqueue(new WildCard(Card.Colors.NONE, Card.Ranks.WILDFOUR));
 
-                deckQueue.enqueue(new WildCard(Card.Colors.YELLOW, Card.Ranks.WILD));
-                deckQueue.enqueue(new WildCard(Card.Colors.YELLOW, Card.Ranks.WILDFOUR));
+                deckQueue.enqueue(new WildCard(Card.Colors.NONE, Card.Ranks.WILD));
+                deckQueue.enqueue(new WildCard(Card.Colors.NONE, Card.Ranks.WILDFOUR));
 
-                deckQueue.enqueue(new WildCard(Card.Colors.GREEN, Card.Ranks.WILD));
-                deckQueue.enqueue(new WildCard(Card.Colors.GREEN, Card.Ranks.WILDFOUR));
+                deckQueue.enqueue(new WildCard(Card.Colors.NONE, Card.Ranks.WILD));
+                deckQueue.enqueue(new WildCard(Card.Colors.NONE, Card.Ranks.WILDFOUR));
 
-                deckQueue.enqueue(new WildCard(Card.Colors.BLUE, Card.Ranks.WILD));
-                deckQueue.enqueue(new WildCard(Card.Colors.BLUE, Card.Ranks.WILDFOUR));
+                deckQueue.enqueue(new WildCard(Card.Colors.NONE, Card.Ranks.WILD));
+                deckQueue.enqueue(new WildCard(Card.Colors.NONE, Card.Ranks.WILDFOUR));
                 
                 this.amount += 8;
             
@@ -201,7 +201,7 @@ class Pile {
         random = new Random();
         Card tempCard = new Card();
         
-        /* if user wants to shuffle together, shuffle whole eck */
+        /* if user wants to shuffle together, shuffle whole deck */
         if (this.shuffleTogether == true) {
             for (int i = deckQueue.getHead(); i < (this.cardPileAmount() + deckQueue.getHead()); i++) {
             
@@ -235,6 +235,8 @@ class Pile {
                     deckQueue.set(pos1, deckQueue.get(pos2));
                     deckQueue.set(pos2, tempCard); 
                 }
+                this.printDeck();
+                System.out.println("\n");
                 numberOfDecksToShuffle--;
                 
                 /* 
@@ -264,21 +266,30 @@ class Pile {
     }
             
     public int cardPileAmount() {
-        return this.amount;
+        return this.deckQueue.getNumberOfElements();
     }
     
-    /*
-    public static void main() {
+    
+    public static void main(String args[]) {
         
         ArrayList<Card.Ranks> actionCardsNotToUse = new ArrayList<Card.Ranks>();
         actionCardsNotToUse.add(Card.Ranks.DRAWTWO);
-        Pile pile = new Pile(2, actionCardsNotToUse, true);
+        Pile pile = new Pile(2, actionCardsNotToUse, false);
+        
         pile.createDeck();
-        //pile.shuffle();
+        /*
+        System.out.println("***DECK SHOULD BE UNSHUFFLED***");
         pile.printDeck();
         
+        System.out.println("***DECK SHOULD BE SHUFFLED***");
+        pile.shuffle();
+        pile.printDeck();
+        */
+        System.out.println("*** TESTING IF SHUFFLE APART WORKS BY SHUFFLING A DECK"
+                + "AT A TIME ***");
+        pile.shuffle();
     }
     
-    */
+   
     
 }

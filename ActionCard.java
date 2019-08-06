@@ -17,16 +17,27 @@ public class ActionCard extends Card {
         super(color, rank);
     }
     
+    public ActionCard() {
+        super();
+    }
+    
     /**
      * All the cards of this color that are in the hand are discarded 
      * for this round
      * @param hand The hand object we are working with 
      * @return Hand This returns new hand after skip performed
      */
-    public Hand skip(Hand hand) {
+    public Hand[] skip(Hand hand) {
         
-        /* new hand to return after skip */
+        /* new hand array to return hand with and without skip colors */
+        Hand[] handArray = new Hand[2];
+        
+        /* hand after skip applied */
         Hand handWithSkip = new Hand();
+        
+        /* hand with cards that are the same color as skip color */
+        /* these are needed to calculate the reps that were skipped */
+        Hand handWithSkippedExercises = new Hand();
         
         /* initialize color for compiler */
         Card.Colors color = Card.Colors.RED;
@@ -43,17 +54,29 @@ public class ActionCard extends Card {
         }
         
         if (skipCardFound == true) {
-            /* remove all cards of this color */
+            
             for (Card curCard: hand.handLL) {
+                /* only add cards of different color of skip */
                 if (curCard.getColor() != color) {
                     handWithSkip.handLL.add(curCard);
                 }
+                /* else add only cards of same color as skipp not including skip */
+                else if (curCard.getRank() != Card.Ranks.SKIP){
+                    handWithSkippedExercises.handLL.add(curCard);
+                }
                 
             }
-            return handWithSkip;
+            
+            /* if skip card was found then return new hands */
+            handArray[0] = handWithSkip;
+            handArray[1] = handWithSkippedExercises;
+            return handArray;
         } 
         
-        return hand;
+        /* if skip card not found then return original hand and empty hand */
+        handArray[0] = hand;
+        handArray[1] = handWithSkippedExercises;
+        return handArray;
 
         
     }
@@ -69,8 +92,32 @@ public class ActionCard extends Card {
      * @param hand The hand object we are working with 
      * @return Hand
      */
-    public Hand drawTwo(Hand hand) {
-        return hand;
+    public void drawTwo(Hand hand, int[] repsList) {
+        
+        Card.Colors color;
+        for (Card curCard: hand.handLL) {
+            if (curCard.getRank() == Card.Ranks.DRAWTWO) {
+                color = curCard.getColor();
+                
+                switch (color) {
+                    case RED:
+                        repsList[0] *= 2;
+                        break;
+                    case GREEN:
+                        repsList[1] *= 2;
+                        break;
+                    case YELLOW:
+                        repsList[2] *= 2;
+                        break;
+                    case BLUE:
+                        repsList[3] *= 2;
+                        break;
+                        
+                }
+            }
+        }
+        
+        
     }
     
     /**
