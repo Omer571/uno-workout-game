@@ -11,37 +11,17 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import static java.lang.Character.toUpperCase;
-
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
 
-// TODO BASIC:
-//CLEAN THE CODE INTO FUNCTIONS AND ADD CLASS
-//DO DOCUMENTATION
-
-// TODO TESTING:
-/*Internal and External documentation, including. The header on each file, Class, Method and
-Parameter descriptions.
-• Test cases for each of the classes and their methods, these test cases need to be included in
-your code, for example, a main method in the class file. 
-// WRITE MULTIPLE TEST CASES FOR EACH CLASS (MAIN METHOD) AND PRINT TO TEXT FILE 
-// HTML OF FULL SYSTEM TEST 
-
-// TODO EXTRA CREDIT:
-//GUI
-
-// TODO UML:
-//UML DIAGRAM
-• UML Class Diagrams for every class you modeled in the project (Updated version).
-
-// break into functions: initilize game, playgame, final report
-// write one more class to startgame
 
 /**
  * 
- * @author sundeep
+ * @author omer sundeep
  */
 public class PlayGame {
     
@@ -427,17 +407,17 @@ public class PlayGame {
         }
     }
     
-    
     //main function for testing
     public static void main(String[] args) {
+        
+        /* scanner object */
+        Scanner input = new Scanner(System.in);
+        
         /* question answers */
         char shuffledTogetherChar = 'Y';
         boolean shuffledTogetherBoolean;
         int numberOfDecks = 1;
-        String actionCardsNotToUseString;
-        
-        /* scanner object */
-        Scanner input = new Scanner(System.in);
+        String actionCardsNotToUseString = new String();
         
         /* make a game */
         PlayGame game = new PlayGame();
@@ -455,9 +435,12 @@ public class PlayGame {
         
         /* prompt for action cards to not use */
         System.out.print("What actions do you NOT want to use? (Options: "
-                + "SKIP, DRAWTWO, REVERSE): ");
-        actionCardsNotToUseString = input.next();
+                + "SKIP, DRAWTWO, REVERSE, USEALL) \n(For multiple enter them "
+                + "seperated by space): ");
         
+        actionCardsNotToUseString = input.next();
+
+        /* check for one action cards not to use */ 
         switch (actionCardsNotToUseString) {
             case "SKIP":
                 game.actionCardsNotToUse.add(Card.Ranks.SKIP);
@@ -470,8 +453,42 @@ public class PlayGame {
                 break;
         }
         
-        //game.actionCardsNotToUse.add(Card.Ranks.DRAWTWO);
+        actionCardsNotToUseString = input.nextLine();
         
+        String[] words = actionCardsNotToUseString.split("\\W+");
+        
+        /* check for second action cards not to use */ 
+        if (words.length > 1) {
+            //System.out.println(words[0].trim());
+            switch (words[1].trim()) {
+                case "SKIP":
+                    game.actionCardsNotToUse.add(Card.Ranks.SKIP);
+                    break;
+                case "DRAWTWO":
+                    game.actionCardsNotToUse.add(Card.Ranks.DRAWTWO);
+                    break;
+                case "REVERSE":
+                    game.actionCardsNotToUse.add(Card.Ranks.REVERSE);
+                    break;
+            }
+        }
+        
+        /* check for third action cards not to use */ 
+        if (words.length > 2) {
+            //System.out.println(words[2].trim());
+            switch (words[2].trim()) {
+                case "SKIP":
+                    game.actionCardsNotToUse.add(Card.Ranks.SKIP);
+                    break;
+                case "DRAWTWO":
+                    game.actionCardsNotToUse.add(Card.Ranks.DRAWTWO);
+                    break;
+                case "REVERSE":
+                    game.actionCardsNotToUse.add(Card.Ranks.REVERSE);
+                    break;
+            }
+        }
+
         /* create pile object */
         Pile pile = new Pile(numberOfDecks, game.actionCardsNotToUse, shuffledTogetherBoolean);
         

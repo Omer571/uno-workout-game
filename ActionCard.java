@@ -155,7 +155,7 @@ public class ActionCard extends Card {
                 + " “Reverse\" card");
     }
     
-    
+    /*THIS IS A CLASS TEST FUNCTION */
     public /*static*/ void main(String[] args) {
         
         Pile deck = new Pile();
